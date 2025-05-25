@@ -28,7 +28,7 @@ class ClipboardWindow: NSObject {
             defer: false
         )
         
-        window.title = "Clipboard Manager"
+        window.title = "ClipboardManager"
         window.center()
         window.isReleasedWhenClosed = false
         

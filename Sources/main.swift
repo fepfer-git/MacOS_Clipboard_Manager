@@ -113,7 +113,7 @@ class ClipboardManagerApp: NSObject, NSApplicationDelegate {
         
         statusItem.menu = menu
         
-        // Initialize clipboard manager
+        // Initialize ClipboardManager
         clipboardManager = ClipboardManager()
         clipboardManager.delegate = self
         
@@ -127,7 +127,7 @@ class ClipboardManagerApp: NSObject, NSApplicationDelegate {
         // Setup global hotkey
         setupGlobalHotkey()
         
-        print("Clipboard Manager started! Press Cmd+Shift+V to show clipboard window or click the menu bar icon.")
+        print("ClipboardManager started! Press Cmd+Shift+V to show clipboard window or click the menu bar icon.")
     }
     
     @objc func statusItemClicked() {

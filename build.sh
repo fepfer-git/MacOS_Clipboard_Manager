@@ -1,7 +1,7 @@
 #!/bin/bash
 # build.sh - Build the application
 
-echo "Building Clipboard Manager..."
+echo "Building ClipboardManager..."
 
 # Build the project
 swift build -c release
