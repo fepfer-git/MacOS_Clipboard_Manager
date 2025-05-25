@@ -78,6 +78,7 @@ If you prefer to do it step-by-step:
 
 - **Copy anything** using `Cmd+C` as you normally would
 - Press **`Cmd+Shift+V`** to open your clipboard history
+- Press **`Cmd+Shift+V`** again or `ESC` to close clipboard history
 - **Click once** on any item to copy it to your clipboard
 - **Search** by typing when the clipboard window is open
 
