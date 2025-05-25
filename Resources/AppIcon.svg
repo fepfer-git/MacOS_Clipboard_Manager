@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Main clipboard gradient - vibrant blue to purple -->
+    <linearGradient id="clipboardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Clip gradient - warm orange to red -->
+    <linearGradient id="clipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Paper gradient - pure white to light gray -->
+    <linearGradient id="paperGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F8FAFC;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Background glow -->
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:0.05" />
+    </radialGradient>
+    
+    <!-- Drop shadow filter -->
+    <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="rgba(0,0,0,0.2)"/>
+    </filter>
+    
+    <!-- Inner shadow for depth -->
+    <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset dx="0" dy="4"/>
+      <feGaussianBlur stdDeviation="8" result="offset-blur"/>
+      <feFlood flood-color="rgba(0,0,0,0.1)"/>
+      <feComposite in2="offset-blur" operator="in"/>
+    </filter>
+  </defs>
+  
+  <!-- Background glow circle -->
+  <circle cx="512" cy="512" r="480" fill="url(#glowGradient)"/>
+  
+  <!-- Main clipboard body with vibrant gradient -->
+  <rect x="240" y="200" width="544" height="720" rx="48" ry="48" 
+        fill="url(#clipboardGradient)" 
+        filter="url(#dropShadow)"/>
+  
+  <!-- Inner paper area -->
+  <rect x="280" y="280" width="464" height="600" rx="24" ry="24" 
+        fill="url(#paperGradient)" 
+        filter="url(#innerShadow)"/>
+  
+  <!-- Clipboard clip (metal part) -->
+  <rect x="400" y="120" width="224" height="120" rx="32" ry="32" 
+        fill="url(#clipGradient)" 
+        filter="url(#dropShadow)"/>
+  
+  <!-- Clip inner highlight -->
+  <rect x="420" y="140" width="184" height="80" rx="16" ry="16" 
+        fill="rgba(255,255,255,0.3)"/>
+  
+  <!-- Content lines on paper with varying opacity -->
+  <g opacity="0.7">
+    <!-- Title line -->
+    <rect x="320" y="340" width="280" height="8" rx="4" fill="#1F2937"/>
+    
+    <!-- Content lines -->
+    <rect x="320" y="380" width="360" height="6" rx="3" fill="#374151"/>
+    <rect x="320" y="420" width="320" height="6" rx="3" fill="#374151"/>
+    <rect x="320" y="460" width="240" height="6" rx="3" fill="#6B7280"/>
+    
+    <!-- Second paragraph -->
+    <rect x="320" y="520" width="200" height="6" rx="3" fill="#9CA3AF"/>
+    <rect x="320" y="560" width="300" height="6" rx="3" fill="#9CA3AF"/>
+    <rect x="320" y="600" width="260" height="6" rx="3" fill="#9CA3AF"/>
+    
+    <!-- Third section -->
+    <rect x="320" y="660" width="180" height="6" rx="3" fill="#D1D5DB"/>
+    <rect x="320" y="700" width="220" height="6" rx="3" fill="#D1D5DB"/>
+  </g>
+  
+  <!-- Modern feature dots at bottom -->
+  <circle cx="360" cy="800" r="16" fill="#10B981" opacity="0.9"/>
+  <circle cx="420" cy="800" r="16" fill="#3B82F6" opacity="0.9"/>
+  <circle cx="480" cy="800" r="16" fill="#8B5CF6" opacity="0.9"/>
+  <circle cx="540" cy="800" r="16" fill="#F59E0B" opacity="0.9"/>
+  <circle cx="600" cy="800" r="16" fill="#EF4444" opacity="0.9"/>
+  
+  <!-- Edge highlight for 3D effect -->
+  <rect x="240" y="200" width="16" height="720" rx="8" 
+        fill="rgba(255,255,255,0.15)"/>
+  
+  <!-- Corner shine effect -->
+  <ellipse cx="400" cy="360" rx="80" ry="40" fill="rgba(255,255,255,0.1)" 
+           transform="rotate(-30 400 360)"/>
+</svg>

@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:ClipboardManager}",
+      "name": "Debug ClipboardManager",
+      "program": "${workspaceFolder:ClipboardManager}/.build/debug/ClipboardManager",
+      "preLaunchTask": "swift: Build Debug ClipboardManager"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:ClipboardManager}",
+      "name": "Release ClipboardManager",
+      "program": "${workspaceFolder:ClipboardManager}/.build/release/ClipboardManager",
+      "preLaunchTask": "swift: Build Release ClipboardManager"
+    }
+  ]
+}
