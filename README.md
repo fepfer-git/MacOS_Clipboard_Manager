@@ -1,122 +1,132 @@
 # ClipboardManager 📋
 
-A powerful, native macOS clipboard manager with a clean black icon design, global hotkeys, and auto-start functionality.
+ClipboardManager is a lightweight, efficient clipboard history tool for macOS that remembers what you copy, so you don't have to.
 
 ## ✨ Features
 
-- **🖤 Clean Black Icon** - Professional menu bar integration with a black clipboard icon
-- **⌨️ Global Hotkey** - Press `Cmd+Shift+V` to instantly access clipboard history
 - **📋 Clipboard History** - Never lose copied text again with persistent history
-- **🚀 Auto-Start** - Launches automatically with macOS (configurable)
-- **⚙️ Settings Menu** - Easy configuration via menu bar right-click
-- **🎯 Native Performance** - Built with Swift for optimal macOS integration
+- **🖥️ Global Hotkey** - Access your clipboard history with `Cmd+Shift+V` from anywhere
 - **🖼️ Image Support** - Handles TIFF, PNG, PDF, and JPEG images
-- **🔍 Search** - Search through clipboard history
+- **🔍 Search** - Filter through your clipboard history
+- **🏎️ Performance** - Minimal resource usage, even with large clipboard histories
 - **📱 Modern UI** - Clean collection view with thumbnails and previews
+- **🚀 Auto-Start** - Option to launch automatically with macOS
 
-## Image Features Added
+## 📥 Installation
 
-### Supported Image Formats
+### Option 1: Download and Install Pre-built App
 
-- TIFF (.tiff)
-- PNG (.png)
-- PDF (.pdf)
-- JPEG (.jpg/.jpeg)
+1. Download the latest release from the Releases page
+2. Unzip the archive
+3. Drag ClipboardManager.app to your Applications folder
 
-### Image Display
+### Option 2: Build from Source
 
-- Images are displayed as thumbnails in the collection view
-- Image items show format type and file size in the title
-- Proper scaling and centering of images
+#### Prerequisites
 
-### Image Copying
+- Xcode 14+ or Swift 5.7+
+- macOS 12.0 or higher
 
-- Copy button works for both text and images
-- Double-click functionality supports images
-- Images are copied back to clipboard in their original format
-
-## How to Use
-
-1. **Build the app**: `./build.sh`
-2. **Run the app**: `./run.sh`
-3. **Copy text or images** to your clipboard as normal
-4. **View clipboard history**: Press `Cmd+Shift+V` or click the menu bar icon
-5. **Copy items**: Click the "Copy" button or double-click any item
-6. **Search**: Use the search field to filter items
-7. **Clear history**: Click "Clear All" button
-
-## Technical Implementation
-
-### ClipboardManager.swift
-
-- Enhanced `checkClipboard()` to detect multiple image formats
-- Updated `copyToPasteboard()` to handle both text and image copying
-- Improved `ClipboardItem` to show descriptive text for images with format and size info
-
-### ClipboardItemView.swift
-
-- Added `customImageView` (renamed to avoid conflict with NSCollectionViewItem's imageView)
-- Updated `configure()` method to show either text view or image view based on item type
-- Enhanced `copyButtonClicked()` to copy both text and images properly
-- Added proper cleanup in `prepareForReuse()`
-
-### UI Layout
-
-- Text and image views occupy the same space but are shown/hidden based on content type
-- Images scale proportionally and are centered
-- Consistent layout for both text and image items
-
-## Building and Installation
-
-## 🚀 NEW: Complete App Bundle Ready!
-
-### Quick Installation (Recommended)
+#### Step 1: Clone the repository
 
 ```bash
-# Build and package the complete app
-./package_app.sh
+git clone https://github.com/yourusername/ClipboardManager.git
+cd ClipboardManager
+```
 
-# Install to Applications folder
+#### Step 2: Build the application
+
+```bash
+# Build the application
+./build_app.sh
+```
+
+#### Step 3: Install to Applications folder
+
+```bash
+# Install the application
 ./install_app.sh
 ```
 
-### What's New
+## 🚀 First Launch
 
-- ✅ **Complete macOS app bundle** (`ClipboardManager.app`)
-- ✅ **Black menu bar icon** (no longer adapts to system theme)
-- ✅ **Settings menu integration** (right-click the menu bar icon)
-- ✅ **Auto-start functionality** (configurable in Settings)
-- ✅ **Professional installation process** (drag to Applications)
-- ✅ **Comprehensive documentation** (see `INSTALLATION_INSTRUCTIONS.md`)
+When you first launch ClipboardManager, you'll need to:
 
-### Usage
+1. **Grant Accessibility Permission**:
 
-1. **Install**: Run `./install_app.sh` or copy `ClipboardManager.app` to Applications
-2. **Launch**: Double-click ClipboardManager in Applications
-3. **Access**: Look for the black clipboard icon in your menu bar
-4. **Hotkey**: Press `Cmd+Shift+V` to show clipboard history
-5. **Settings**: Right-click the menu bar icon → Settings...
+   - You'll be prompted to grant Accessibility permissions
+   - Open System Preferences → Security & Privacy → Privacy → Accessibility
+   - Add ClipboardManager to the list of allowed apps
 
-### Distribution Ready
+2. **Menu Bar Icon**:
+   - Look for the clipboard icon in your menu bar
+   - Right-click to access settings and options
 
-The app is now packaged as a complete macOS application bundle that can be:
+## 🔧 Using ClipboardManager
 
-- Installed via the provided scripts
-- Manually copied to Applications folder
-- Distributed as a standalone `.app` file
-- Configured for auto-start on login
+### Basic Usage
 
-## Legacy Build Instructions
+- **Copy text or images** as you normally would (`Cmd+C`)
+- Press **`Cmd+Shift+V`** to open the clipboard history window
+- **Click an item** to copy it back to your clipboard
+- **Double-click** to copy and paste in one action
+
+### Search
+
+- Open the clipboard window with `Cmd+Shift+V`
+- Start typing to filter items
+- Use keywords like "image" or "text" to filter by type
+
+### Managing Clipboard Items
+
+- **Single-click** an item to copy it
+- Items are automatically saved between app restarts
+- ClipboardManager won't duplicate consecutively copied identical items
+
+## 🛠️ Troubleshooting
+
+### App Won't Start
+
+Make sure:
+
+1. You have macOS 12.0 or higher
+2. You've granted necessary permissions in System Preferences
+3. Try rebuilding with: `./build_app.sh && ./install_app.sh`
+
+### Hotkey Not Working
+
+1. Check if ClipboardManager is running (look for menu bar icon)
+2. Ensure Accessibility permissions are granted
+3. Restart the app: right-click menu bar icon → Quit → relaunch
+
+## ⌨️ Building for Development
+
+For developers who want to modify the app:
 
 ```bash
-# Build the project (legacy method)
-./build.sh
+# Build debug version
+swift build -c debug
 
-# Run directly from build
-./run.sh
-
-# Create macOS app bundle (legacy)
-./install.sh
+# Run the debug build
+./.build/debug/ClipboardManager
 ```
 
-The app runs as a menu bar utility (no dock icon) and monitors clipboard changes in real-time.
+## 📷 Image Support Details
+
+ClipboardManager supports several image formats:
+
+- **TIFF** (.tiff) - High-quality images with lossless compression
+- **PNG** (.png) - Web-friendly format with transparency support
+- **PDF** (.pdf) - Document format that preserves vector graphics
+- **JPEG** (.jpg/.jpeg) - Compressed image format ideal for photographs
+
+Images are displayed with:
+
+- Automatic scaling to fit the view
+- Subtle borders for better visualization
+- Format and size information
+
+## 🙏 Acknowledgments
+
+- Inspired by the need for a lightweight, native macOS clipboard manager
+- Built with Swift and AppKit for optimal performance

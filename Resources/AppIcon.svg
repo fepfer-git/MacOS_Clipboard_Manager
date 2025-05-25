@@ -22,12 +22,6 @@
       <stop offset="100%" style="stop-color:#F8FAFC;stop-opacity:1" />
     </linearGradient>
     
-    <!-- Background glow -->
-    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.1" />
-      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:0.05" />
-    </radialGradient>
-    
     <!-- Drop shadow filter -->
     <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="rgba(0,0,0,0.2)"/>
@@ -41,9 +35,6 @@
       <feComposite in2="offset-blur" operator="in"/>
     </filter>
   </defs>
-  
-  <!-- Background glow circle -->
-  <circle cx="512" cy="512" r="480" fill="url(#glowGradient)"/>
   
   <!-- Main clipboard body with vibrant gradient -->
   <rect x="240" y="200" width="544" height="720" rx="48" ry="48" 

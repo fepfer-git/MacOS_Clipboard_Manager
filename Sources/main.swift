@@ -117,10 +117,6 @@ class ClipboardManagerApp: NSObject, NSApplicationDelegate {
         clipboardManager = ClipboardManager()
         clipboardManager.delegate = self
         
-        // Enable persistence and cloud sync
-        clipboardManager.enablePersistence()
-        clipboardManager.enableCloudSync()
-        
         // Create clipboard window
         clipboardWindow = ClipboardWindow()
         clipboardWindow.clipboardManager = clipboardManager

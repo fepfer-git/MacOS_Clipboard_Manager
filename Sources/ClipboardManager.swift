@@ -59,31 +59,25 @@ class ClipboardManager {
     private let maxHistoryItems = 50
     private var isIgnoringNextChange = false
     
-    // Add persistence and cloud sync support
-    private var localStorage: LocalStorageManager?
-    private var cloudStorage: CloudStorageManager?
-    
     weak var delegate: ClipboardManagerDelegate?
     
     private(set) var history: [ClipboardItem] = []
     
     init() {
         lastChangeCount = pasteboard.changeCount
-        localStorage = LocalStorageManager()
-        cloudStorage = CloudStorageManager()
     }
     
     func startMonitoring() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
             self?.checkClipboard()
         }
-        print("Started monitoring clipboard...")
+        print("📋 Started monitoring clipboard...")
     }
     
     func stopMonitoring() {
         timer?.invalidate()
         timer = nil
-        print("Stopped monitoring clipboard.")
+        print("📋 Stopped monitoring clipboard.")
     }
     
     private func checkClipboard() {
@@ -99,7 +93,6 @@ class ClipboardManager {
         lastChangeCount = pasteboard.changeCount
         
         // Check for images first (prioritize images over text)
-        // Support multiple image formats
         if let imageData = pasteboard.data(forType: .tiff) {
             addClipboardItem(imageData: imageData, type: .tiff)
         } else if let imageData = pasteboard.data(forType: .png) {
@@ -129,7 +122,7 @@ class ClipboardManager {
             history.removeLast(history.count - maxHistoryItems)
         }
         
-        print("Added new clipboard item: \(String(content.prefix(50)))\(content.count > 50 ? "..." : "")")
+        print("📋 Added clipboard item: \(String(content.prefix(50)))\(content.count > 50 ? "..." : "")")
         delegate?.clipboardDidUpdate()
     }
     
@@ -150,7 +143,7 @@ class ClipboardManager {
             history.removeLast(history.count - maxHistoryItems)
         }
         
-        print("Added new clipboard image item: \(imageData.count) bytes")
+        print("📋 Added clipboard image: \(imageData.count) bytes")
         delegate?.clipboardDidUpdate()
     }
     
@@ -163,11 +156,11 @@ class ClipboardManager {
         switch item.itemType {
         case .text:
             pasteboard.setString(item.content, forType: item.type)
-            print("Copied text item to pasteboard: \(String(item.content.prefix(50)))\(item.content.count > 50 ? "..." : "")")
+            print("📋 Copied text to pasteboard: \(String(item.content.prefix(50)))\(item.content.count > 50 ? "..." : "")")
         case .image:
             if let imageData = item.imageData {
                 pasteboard.setData(imageData, forType: item.type)
-                print("Copied image item to pasteboard: \(imageData.count) bytes")
+                print("📋 Copied image to pasteboard: \(imageData.count) bytes")
             }
         }
         
@@ -176,7 +169,7 @@ class ClipboardManager {
     
     func clearHistory() {
         history.removeAll()
-        print("Cleared clipboard history")
+        print("📋 Cleared clipboard history")
         delegate?.clipboardDidUpdate()
     }
     
@@ -198,73 +191,7 @@ class ClipboardManager {
         }
     }
     
-    func enablePersistence() {
-        // Load persisted items on startup
-        if let savedItems = localStorage?.load() {
-            history = savedItems
-            print("✅ Loaded \(savedItems.count) items from persistence")
-            delegate?.clipboardDidUpdate()
-        }
-        
-        // Auto-save every 30 seconds
-        Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
-            self?.saveToFile()
-        }
-    }
-    
-    func enableCloudSync() {
-        // Load items from cloud on startup
-        cloudStorage?.loadClipboardItems { [weak self] cloudItems in
-            self?.mergeCloudItems(cloudItems)
-        }
-        
-        // Auto-sync every 5 minutes
-        Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
-            if let items = self?.history {
-                self?.cloudStorage?.saveClipboardItems(Array(items.prefix(50))) // Sync last 50 items
-            }
-        }
-    }
-    
-    func saveToFile() {
-        localStorage?.save(history)
-    }
-    
-    func clearAllData() {
-        // Clear local data
-        history.removeAll()
-        localStorage?.clear()
-        
-        // Clear cloud data
-        cloudStorage?.clearAllCloudData { success in
-            if success {
-                print("✅ All data cleared successfully")
-            } else {
-                print("⚠️  Failed to clear cloud data")
-            }
-        }
-        
-        delegate?.clipboardDidUpdate()
-    }
-    
-    private func mergeCloudItems(_ cloudItems: [ClipboardItem]) {
-        let localItemIds = Set(history.map { $0.id })
-        let newCloudItems = cloudItems.filter { !localItemIds.contains($0.id) }
-        
-        // Add new cloud items to local storage
-        for item in newCloudItems {
-            history.insert(item, at: 0)
-        }
-        
-        // Limit total items to prevent memory issues
-        if history.count > 1000 {
-            history = Array(history.prefix(1000))
-        }
-        
-        // Save to local storage
-        saveToFile()
-        
-        print("✅ Merged \(newCloudItems.count) new items from cloud")
-        delegate?.clipboardDidUpdate()
+    func getItems() -> [ClipboardItem] {
+        return history
     }
 }
