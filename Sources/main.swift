@@ -161,13 +161,27 @@ class ClipboardManagerApp: NSObject, NSApplicationDelegate {
     }
     
     func setupGlobalHotkey() {
-        // Register Cmd+Shift+V hotkey
-        let hotkey = GlobalHotkey(keyCode: 9, modifiers: [.command, .shift]) { [weak self] in
+        // Register Cmd+Shift+V for showing clipboard
+        let showClipboardHotkey = GlobalHotkey(keyCode: 9, modifiers: [.command, .shift]) { [weak self] in
             DispatchQueue.main.async {
-                self?.toggleClipboardWindow()
+                if self?.clipboardWindow.isVisible == true {
+                    self?.clipboardWindow.hideWindow()
+                } else {
+                    self?.clipboardWindow.showWindow()
+                }
             }
         }
-        hotkey.register()
+        showClipboardHotkey.register()
+        
+        // Register ESC key for closing clipboard window (only when window is visible)
+        let escHotkey = GlobalHotkey(keyCode: 53, modifiers: []) { [weak self] in
+            DispatchQueue.main.async {
+                if self?.clipboardWindow.isVisible == true {
+                    self?.clipboardWindow.hideWindow()
+                }
+            }
+        }
+        escHotkey.register()
     }
 }
 

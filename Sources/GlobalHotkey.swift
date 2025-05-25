@@ -52,7 +52,11 @@ class GlobalHotkey {
             print("Failed to register hotkey: \(status)")
         } else {
             GlobalHotkey.hotkeyInstances.append(self)
-            print("Successfully registered hotkey Cmd+Shift+V")
+            if keyCode == 53 { // ESC key
+                print("Successfully registered ESC key for closing window")
+            } else {
+                print("Successfully registered hotkey Cmd+Shift+V")
+            }
         }
     }
     

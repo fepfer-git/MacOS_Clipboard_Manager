@@ -218,8 +218,11 @@ extension ClipboardWindow: NSSearchFieldDelegate {
 // MARK: - NSWindowDelegate
 extension ClipboardWindow: NSWindowDelegate {
     func windowDidResignKey(_ notification: Notification) {
-        // Hide window when it loses focus (like a typical utility window)
-        hideWindow()
+        // Only hide window when it loses focus if there's no modal sheet or alert
+        // Check if there are any attached sheets (like our confirmation dialog)
+        if window.attachedSheet == nil {
+            hideWindow()
+        }
     }
     
     func windowShouldClose(_ sender: NSWindow) -> Bool {
