@@ -4,18 +4,18 @@
       "type": "swift",
       "request": "launch",
       "args": [],
-      "cwd": "${workspaceFolder:ClipboardManager}",
+      "cwd": "${workspaceFolder:MacOS_Clipboard_Manager}",
       "name": "Debug ClipboardManager",
-      "program": "${workspaceFolder:ClipboardManager}/.build/debug/ClipboardManager",
+      "program": "${workspaceFolder:MacOS_Clipboard_Manager}/.build/debug/ClipboardManager",
       "preLaunchTask": "swift: Build Debug ClipboardManager"
     },
     {
       "type": "swift",
       "request": "launch",
       "args": [],
-      "cwd": "${workspaceFolder:ClipboardManager}",
+      "cwd": "${workspaceFolder:MacOS_Clipboard_Manager}",
       "name": "Release ClipboardManager",
-      "program": "${workspaceFolder:ClipboardManager}/.build/release/ClipboardManager",
+      "program": "${workspaceFolder:MacOS_Clipboard_Manager}/.build/release/ClipboardManager",
       "preLaunchTask": "swift: Build Release ClipboardManager"
     }
   ]

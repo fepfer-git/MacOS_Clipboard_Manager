@@ -11,8 +11,8 @@ class ClipboardItemView: NSCollectionViewItem {
     private var clipboardItem: ClipboardItem?
     
     private var containerView: NSView!
-    private var textView: NSTextView!
-    private var scrollView: NSScrollView!
+    private var textLabel: NSTextField!
+    private var textScrollView: NSScrollView!
     private var customImageView: NSImageView!
     private var timeLabel: NSTextField!
     private var statusLabel: NSTextField!
@@ -40,12 +40,6 @@ class ClipboardItemView: NSCollectionViewItem {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(containerView)
         
-        // Setup text view with scroll view
-        setupTextView()
-        
-        // Setup image view
-        setupImageView()
-        
         // Time label
         timeLabel = NSTextField()
         timeLabel.isEditable = false
@@ -57,6 +51,45 @@ class ClipboardItemView: NSCollectionViewItem {
         timeLabel.alignment = .center
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(timeLabel)
+        
+        // Text label for displaying clipboard text
+        textLabel = NSTextField()
+        textLabel.isEditable = false
+        textLabel.isSelectable = true
+        textLabel.isBordered = false
+        textLabel.backgroundColor = .clear
+        textLabel.font = NSFont.systemFont(ofSize: 12)
+        textLabel.textColor = NSColor.labelColor
+        textLabel.alignment = .left
+        textLabel.lineBreakMode = .byWordWrapping
+        textLabel.maximumNumberOfLines = 0  // Allow unlimited lines
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Create scroll view for text
+        textScrollView = NSScrollView()
+        textScrollView.hasVerticalScroller = true
+        textScrollView.hasHorizontalScroller = false
+        textScrollView.autohidesScrollers = true
+        textScrollView.borderType = .noBorder
+        textScrollView.translatesAutoresizingMaskIntoConstraints = false
+        textScrollView.documentView = textLabel
+        
+        containerView.addSubview(textScrollView)
+        
+        // Image view for displaying clipboard images
+        customImageView = NSImageView()
+        customImageView.imageScaling = .scaleProportionallyUpOrDown
+        customImageView.imageAlignment = .alignCenter
+        customImageView.translatesAutoresizingMaskIntoConstraints = false
+        customImageView.isHidden = true
+        
+        // Add border for images
+        customImageView.wantsLayer = true
+        customImageView.layer?.borderWidth = 1
+        customImageView.layer?.borderColor = NSColor.separatorColor.cgColor
+        customImageView.layer?.cornerRadius = 4
+        
+        containerView.addSubview(customImageView)
         
         // Status label for feedback
         statusLabel = NSTextField()
@@ -85,13 +118,13 @@ class ClipboardItemView: NSCollectionViewItem {
             timeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             timeLabel.heightAnchor.constraint(equalToConstant: 14),
             
-            // Text view fills most of the space
-            scrollView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 4),
-            scrollView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-            scrollView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
-            scrollView.bottomAnchor.constraint(equalTo: statusLabel.topAnchor, constant: -4),
+            // Text scroll view fills most of the space
+            textScrollView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 4),
+            textScrollView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+            textScrollView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+            textScrollView.bottomAnchor.constraint(equalTo: statusLabel.topAnchor, constant: -4),
             
-            // Image view fills most of the space (same position as text view)
+            // Image view fills same space as text label
             customImageView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 4),
             customImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             customImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
@@ -107,59 +140,14 @@ class ClipboardItemView: NSCollectionViewItem {
         // Add hover effect
         setupHoverEffect()
         
-        // Add single-click gesture for copying
+        // Add click gestures
         let singleClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleSingleClick))
         singleClickGesture.numberOfClicksRequired = 1
         containerView.addGestureRecognizer(singleClickGesture)
         
-        // Add double-click gesture for copy and paste
         let doubleClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleDoubleClick))
         doubleClickGesture.numberOfClicksRequired = 2
         containerView.addGestureRecognizer(doubleClickGesture)
-    }
-    
-    private func setupTextView() {
-        // Create scroll view
-        scrollView = NSScrollView()
-        scrollView.hasVerticalScroller = true
-        scrollView.hasHorizontalScroller = false
-        scrollView.autohidesScrollers = true
-        scrollView.borderType = .noBorder
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Create text view
-        textView = NSTextView()
-        textView.isEditable = false
-        textView.isSelectable = true
-        textView.isRichText = false
-        textView.font = NSFont.systemFont(ofSize: 12)  // Increased from 11 for better readability
-        textView.textColor = NSColor.labelColor
-        textView.backgroundColor = .clear
-        textView.textContainer?.lineFragmentPadding = 4
-        textView.textContainer?.containerSize = NSSize(width: 220, height: CGFloat.greatestFiniteMagnitude)  // Increased from 180 to match larger items
-        textView.textContainer?.widthTracksTextView = true
-        textView.isVerticallyResizable = true
-        textView.isHorizontallyResizable = false
-        
-        scrollView.documentView = textView
-        containerView.addSubview(scrollView)
-    }
-    
-    private func setupImageView() {
-        // Create image view
-        customImageView = NSImageView()
-        customImageView.imageScaling = .scaleProportionallyUpOrDown
-        customImageView.imageAlignment = .alignCenter
-        customImageView.translatesAutoresizingMaskIntoConstraints = false
-        customImageView.isHidden = true // Hidden by default, shown for image items
-        
-        // Add a subtle border for images
-        customImageView.wantsLayer = true
-        customImageView.layer?.borderWidth = 1
-        customImageView.layer?.borderColor = NSColor.separatorColor.cgColor
-        customImageView.layer?.cornerRadius = 4
-        
-        containerView.addSubview(customImageView)
     }
     
     private func setupHoverEffect() {
@@ -203,38 +191,31 @@ class ClipboardItemView: NSCollectionViewItem {
         // Configure based on item type
         switch item.itemType {
         case .text:
-            // Show text view, hide image view
-            scrollView.isHidden = false
+            // Show text scroll view, hide image view
+            textScrollView.isHidden = false
             customImageView.isHidden = true
             
             // Set text content
-            textView.string = item.content
+            textLabel.stringValue = item.content
             
-            // Scroll to top
-            textView.scrollToBeginningOfDocument(nil)
+            // Set the text label frame to fit content for proper scrolling
+            let textSize = textLabel.sizeThatFits(NSSize(width: textScrollView.contentSize.width, height: CGFloat.greatestFiniteMagnitude))
+            textLabel.frame = NSRect(origin: .zero, size: textSize)
             
         case .image:
-            // Show image view, hide text view
-            scrollView.isHidden = true
+            // Show image view, hide text scroll view
+            textScrollView.isHidden = true
             customImageView.isHidden = false
             
             // Set image content
             if let imageData = item.imageData {
-                // Try to create NSImage from data
                 if let image = NSImage(data: imageData) {
                     customImageView.image = image
                 } else {
-                    // For PDF or other formats, try different approaches
-                    if item.type == .pdf {
-                        // For PDF, we can show a PDF icon or first page
-                        customImageView.image = NSImage(systemSymbolName: "doc.richtext", accessibilityDescription: "PDF Document")
-                    } else {
-                        // Generic image placeholder
-                        customImageView.image = NSImage(systemSymbolName: "photo", accessibilityDescription: "Image")
-                    }
+                    // Show placeholder for unsupported image formats
+                    customImageView.image = NSImage(systemSymbolName: "photo", accessibilityDescription: "Image")
                 }
             } else {
-                // Fallback image or placeholder
                 customImageView.image = NSImage(systemSymbolName: "photo", accessibilityDescription: "Image")
             }
         }
@@ -246,15 +227,20 @@ class ClipboardItemView: NSCollectionViewItem {
         // Show visual feedback
         showCopiedFeedback()
         
-        // Notify delegate to handle copying
+        // Notify delegate
         delegate?.clipboardItemView(self, didClickItem: item)
+    }
+    
+    @objc private func handleDoubleClick() {
+        guard let item = clipboardItem else { return }
+        delegate?.clipboardItemView(self, didDoubleClickItem: item)
     }
     
     private func showCopiedFeedback() {
         statusLabel.stringValue = "✓ Copied!"
         statusLabel.isHidden = false
         
-        // Animate the feedback
+        // Animate feedback
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.3
             statusLabel.alphaValue = 1.0
@@ -272,19 +258,14 @@ class ClipboardItemView: NSCollectionViewItem {
         }
     }
     
-    @objc private func handleDoubleClick() {
-        guard let item = clipboardItem else { return }
-        delegate?.clipboardItemView(self, didDoubleClickItem: item)
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
-        textView.string = ""
+        textLabel.stringValue = ""
         timeLabel.stringValue = ""
         statusLabel.stringValue = ""
         statusLabel.isHidden = true
         customImageView.image = nil
-        scrollView.isHidden = false
+        textScrollView.isHidden = false
         customImageView.isHidden = true
         clipboardItem = nil
     }
